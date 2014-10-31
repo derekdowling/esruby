@@ -1,25 +1,12 @@
-name             "elasticsearch"
+name             'esruby'
+maintainer       'Derek Dowling'
+maintainer_email 'me@derekdowling.com'
+license          'apache2'
+description      'Installs/Configures Elastic Search'
+long_description 'Installs/Configures ES'
+version          '0.2.0'
 
-maintainer       "karmi"
-maintainer_email "karmi@karmi.cz"
-license          "Apache"
-description      "Installs and configures elasticsearch"
-long_description IO.read(File.join(File.dirname(__FILE__), 'README.markdown'))
-version          "0.3.11"
-
-depends 'ark', '>= 0.2.4'
-
-recommends 'build-essential'
-recommends 'xml'
-recommends 'java'
-recommends 'monit'
-
-provides 'elasticsearch'
-provides 'elasticsearch::data'
-provides 'elasticsearch::ebs'
-provides 'elasticsearch::aws'
-provides 'elasticsearch::nginx'
-provides 'elasticsearch::proxy'
-provides 'elasticsearch::plugins'
-provides 'elasticsearch::monit'
-provides 'elasticsearch::search_discovery'
+depends "java"
+depends "elasticsearch"
+depends 'vim'
+depends 'apt'
