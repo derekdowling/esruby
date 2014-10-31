@@ -4,7 +4,7 @@ driver:
   network:
     - ["private_network", { ip: "10.1.3.8" }]
   synced_folders:
-    - ["../cmput391", "/cmput391", "created: true"]
+    # - ["../cmput391", "/cmput391", "created: true"]
 
 provisioner:
   name: chef_solo
