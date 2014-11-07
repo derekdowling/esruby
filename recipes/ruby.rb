@@ -8,5 +8,5 @@ apt_repository "ruby2.1" do
 end
 
 package "rubygems" do
-      action :upgrade
+    action :upgrade
 end
