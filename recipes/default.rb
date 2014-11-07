@@ -4,7 +4,6 @@
 #
 # Copyright (c) 2014 The Authors, All Rights Reserved.
 #
-include_recipe "esruby::ruby"
 
 # FUTURE ELASTICSEARCH SERVER
 # Until we start provisioning different types of production servers, this will be
@@ -12,7 +11,14 @@ include_recipe "esruby::ruby"
 # that are determined by the role played by node.
 include_recipe "java"
 include_recipe "elasticsearch::default"
-include_recipe "elasticsearch::nginx"
 
 # BASIC TOOLS
-include_recipe "apt"
+include_recipe "ufw"
+include_recipe "firewall"
+
+firewall_rule "es" do
+    protocol :tcp
+    ports [9200, 9300]
+    action :allow
+    notifies :enable, 'firewall[ufw]'
+end

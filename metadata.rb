@@ -7,5 +7,7 @@ long_description 'Installs/Configures ES'
 version          '0.1.1'
 
 depends "java"
+depends "ufw"
+depends "firewall", "= 0.11.8"
 depends "elasticsearch"
 depends "apt"
