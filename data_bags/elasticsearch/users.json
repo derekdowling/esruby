@@ -1,0 +1,8 @@
+{
+    "id" : "users",
+    "_default" : {
+        "users" : [
+            {"username" : "cs391", "password" : "supersecure"},
+        ]
+    }
+}
