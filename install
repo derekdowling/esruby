@@ -1,26 +1,30 @@
 #!/usr/bin/env bash
 echo "Uploading cluster.json"
 export HOST=199.116.235.83
-export SSH_OPTIONS="-o User=user -i ~/.ssh/391project.pem -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null"
+export SSH_OPTIONS="-o User=user -i /Users/derek/.ssh/391project.pem -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null"
+export HOME="/home/user"
 
 scp $SSH_OPTIONS cluster.json $HOST:
 ssh -t $SSH_OPTIONS $HOST \
-      "curl -# -L -k -o /tmp/esruby-master.tar.gz https://github.com/derekdowling/esruby/archive/master.tar.gz"
+      "curl -# -L -k -o $HOME/esruby-master.tar.gz https://github.com/derekdowling/esruby/archive/master.tar.gz"
 
 echo "Installing chef/berkshelf"
 time ssh -t $SSH_OPTIONS $HOST <<END
-    sudo apt-get update
-    sudo apt-get install build-essential curl git vim -y
-    curl -# -L http://www.opscode.com/chef/install.sh | sudo bash -s --
-    sudo mkdir -p /etc/chef/; sudo mkdir -p /var/chef/cookbooks/esruby
-    sudo tar --strip 1 -C /var/chef/cookbooks/esruby -xf /tmp/esruby-master.tar.gz
-    sudo apt-get install bison zlib1g-dev libopenssl-ruby1.9.1 libssl-dev libyaml-0-2 libxslt-dev libxml2-dev libreadline-gplv2-dev libncurses5-dev file ruby1.9.1-dev git --yes --fix-missing
-    sudo /opt/chef/embedded/bin/gem install berkshelf --version 2.0.14 --no-rdoc --no-ri
-    sudo /opt/chef/embedded/bin/berks install --path=/var/chef/cookbooks/ --berksfile=/var/chef/cookbooks/esruby/Berksfile
+    apt-get update
+    apt-get install build-essential curl git vim -y
+    curl -L https://get.rvm.io | bash -s stable
+    source /usr/local/rvm/scripts/rvm
+    rvm install ruby 2.1.1
+    gem install bundler
+    mkdir -p $HOME/chef/; mkdir -p $HOME/chef/cookbooks/esruby
+    tar --strip 1 -C $HOME/chef/cookbooks/esruby -xf $HOME/esruby-master.tar.gz
+    cd $HOME/chef/cookbooks/esruby
+    bundle install
+    berks install --path=$HOME/chef/cookbooks/ --berksfile=$HOME/chef/cookbooks/esruby/Berksfile
 END
 
 echo "Installing cookbooks"
-ssh -t $SSH_OPTIONS $HOST "sudo chef-solo -N 391-Cluster-0 -j node.json"
+ssh -t $SSH_OPTIONS $HOST "chef-solo -N 391-Cluster-0 -j node.json"
 
 echo "Finished, checking cluster:"
 ssh $SSH_OPTIONS $HOST "curl localhost:9200"
