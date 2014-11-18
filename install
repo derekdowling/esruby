@@ -1,30 +1,12 @@
 #!/usr/bin/env bash
 echo "Uploading cluster.json"
-export HOST=199.116.235.83
-export SSH_OPTIONS="-o User=user -i /Users/derek/.ssh/391project.pem -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null"
-export HOME="/home/user"
+# export HOST=199.116.235.83
+# export SSH_OPTIONS="-o User=user -i /Users/derek/.ssh/391project.pem -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null"
+export HOST=10.1.0.249
+export SSH_OPTIONS=""
 
 scp $SSH_OPTIONS cluster.json $HOST:
 ssh -t $SSH_OPTIONS $HOST \
-      "curl -# -L -k -o $HOME/esruby-master.tar.gz https://github.com/derekdowling/esruby/archive/master.tar.gz"
+      "curl -# -L -k -o /tmp/esruby-master.tar.gz https://github.com/derekdowling/esruby/archive/master.tar.gz"
 
-echo "Installing chef/berkshelf"
-time ssh -t $SSH_OPTIONS $HOST <<END
-    apt-get update
-    apt-get install build-essential curl git vim -y
-    curl -L https://get.rvm.io | bash -s stable
-    source /usr/local/rvm/scripts/rvm
-    rvm install ruby 2.1.1
-    gem install bundler
-    mkdir -p $HOME/chef/; mkdir -p $HOME/chef/cookbooks/esruby
-    tar --strip 1 -C $HOME/chef/cookbooks/esruby -xf $HOME/esruby-master.tar.gz
-    cd $HOME/chef/cookbooks/esruby
-    bundle install
-    berks install --path=$HOME/chef/cookbooks/ --berksfile=$HOME/chef/cookbooks/esruby/Berksfile
-END
-
-echo "Installing cookbooks"
-ssh -t $SSH_OPTIONS $HOST "chef-solo -N 391-Cluster-0 -j node.json"
-
-echo "Finished, checking cluster:"
-ssh $SSH_OPTIONS $HOST "curl localhost:9200"
+echo "ssh -i ~/.ssh/391project.pem user@199.116.235.83"
