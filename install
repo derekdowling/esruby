@@ -28,7 +28,7 @@ ssh $OPTS $HOST <<END
     sudo apt-get install bison zlib1g-dev libopenssl-ruby1.9.1 libssl-dev libyaml-0-2 libxslt-dev libxml2-dev libreadline-gplv2-dev libncurses5-dev file ruby1.9.1-dev git --yes --fix-missing
     sudo gem install berkshelf --no-rdoc --no-ri
     sudo berks vendor /var/chef/cookbooks/ -b $CHEF/Berksfile
-    sudo chef-solo -N 391-Cluster -j $CHEF/cluster.json -c $CHEF/solo.rb
+    sudo chef-solo -N 391Cluster -j $CHEF/cluster.json -c $CHEF/solo.rb
 END
 
 echo "Installation Complete"
