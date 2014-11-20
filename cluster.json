@@ -1,7 +1,7 @@
 {
     "name": "391-Cluster",
     "run_list": [
-        "role[all]",
+        "role[cluster]",
         "recipe[esruby::default]"
     ]
 }
