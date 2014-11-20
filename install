@@ -1,10 +1,37 @@
 #!/usr/bin/env bash
+
 echo "Uploading cluster.json"
-def_host=199.116.235.83
-# export SSH_OPTIONS="-o User=user -i /Users/derek/.ssh/391project.pem -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null"
-export HOST=${1:-$def_host}
 
-ssh -t $SSH_OPTIONS $HOST \
-      "curl -# -L -k -o git clone https://github.com/derekdowling/esruby"
+export HOST="199.116.235.83"
+export CHEF="/var/chef/cookbooks/esruby"
+export OPTS="-A -t -o User=ubuntu -i /Users/derek/.ssh/391project.pem"
+export HOME="/home/user"
+export SUB_OPTS=""
 
-echo "ssh -i ~/.ssh/391project.pem user@199.116.235.83"
+# See if we are proxying through our public IP, checks if $SUB_HOST is set
+if [ ${1} = "-s" ]; then
+    echo "made it"
+    export OPTS="-A $OPTS"
+    export SUB_OPTS="-A -t -o User=ubuntu"
+    export SUB_HOST=${2}
+fi
+
+#ssh $OPTS $HOST ssh $SUB_OPTS $SUB_HOST <<END
+ssh $OPTS $HOST <<END
+    sudo apt-get update
+    sudo apt-get install build-essential curl git vim -y
+    curl -# -L http://www.opscode.com/chef/install.sh | sudo bash -s --
+    sudo mkdir -p /etc/chef
+    sudo mkdir -p $CHEF
+    sudo curl -# -L -k -o /tmp/esruby-master.tar.gz https://github.com/derekdowling/esruby/archive/master.tar.gz
+    sudo tar --strip 1 -C $CHEF -xf /tmp/esruby-master.tar.gz
+    sudo apt-get install bison zlib1g-dev libopenssl-ruby1.9.1 libssl-dev libyaml-0-2 libxslt-dev libxml2-dev libreadline-gplv2-dev libncurses5-dev file ruby1.9.1-dev git --yes --fix-missing
+    sudo gem install berkshelf --no-rdoc --no-ri
+    sudo berks vendor /var/chef/cookbooks/ -b $CHEF/Berksfile
+    sudo chef-solo -N 391-Cluster -j $CHEF/cluster.json -c $CHEF/solo.rb
+END
+
+echo "Installation Complete"
+
+echo "Cluster Status"
+curl $def_host:9200
