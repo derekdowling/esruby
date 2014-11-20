@@ -1,12 +1,10 @@
 #!/usr/bin/env bash
 echo "Uploading cluster.json"
-# export HOST=199.116.235.83
+def_host=199.116.235.83
 # export SSH_OPTIONS="-o User=user -i /Users/derek/.ssh/391project.pem -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null"
-export HOST=10.1.0.249
-export SSH_OPTIONS=""
+export HOST=${1:-$def_host}
 
-scp $SSH_OPTIONS cluster.json $HOST:
 ssh -t $SSH_OPTIONS $HOST \
-      "curl -# -L -k -o /tmp/esruby-master.tar.gz https://github.com/derekdowling/esruby/archive/master.tar.gz"
+      "curl -# -L -k -o git clone https://github.com/derekdowling/esruby"
 
 echo "ssh -i ~/.ssh/391project.pem user@199.116.235.83"
