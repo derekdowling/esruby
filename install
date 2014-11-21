@@ -4,7 +4,7 @@ export PROXY="199.116.235.83"
 export CHEF="/home/ubuntu/esruby"
 export OPTS="-A -t -o User=ubuntu -i /Users/derek/.ssh/391project.pem"
 export SUB_OPTS="-A -t -o User=ubuntu"
-export HOME="/home/user"
+export HOME="/home/ubuntu"
 
 # Nodes To Run Against
 nodes=( 10.1.0.247 10.1.0.249 10.1.1.41 10.1.1.44 )
@@ -32,11 +32,13 @@ do
 		sudo command curl -sSL https://rvm.io/mpapis.asc | gpg --import -
 		sudo curl -sSL https://get.rvm.io | bash -s stable --ruby
 		sudo source /home/ubuntu/.rvm/scripts/rvm
+		rm -rf $CHEF
 		git clone https://github.com/derekdowling/esruby.git
 		sudo gem install chef --no-rdoc --no-ri
 		sudo gem install berkshelf --no-rdoc --no-ri
 		sudo berks install -b $CHEF/Berksfile
 		sudo hef-solo -N 391Cluster -j $CHEF/cluster.json -c $CHEF/solo.rb
+		rm -rf $HOME/cs391
 		git clone https://github.com/derekdowling/cs391.git
 		END
 done
@@ -44,4 +46,4 @@ done
 echo "Installation Complete"
 
 echo "Cluster Status"
-curl $def_host:9200
+curl 199.116.235.83:9200
