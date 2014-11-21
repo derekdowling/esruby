@@ -15,17 +15,6 @@ default_attributes(
     "path" => {
       "data" => "/data/elasticsearch"
     },
-    "plugins" => {
-      "karmi/elasticsearch-paramedic" => {
-        "url" => "https://github.com/karmi/elasticsearch-paramedic/archive/master.zip"
-      },
-      "marvel" => {
-        "url" => "http://download.elasticsearch.org/elasticsearch/marvel/marvel-latest.zip"
-      },
-      "kibana" => {
-        "url" => "https://download.elasticsearch.org/kibana/kibana/kibana-4.0.0-BETA1.1.zip"
-      }
-    },
     "discovery" => {
       "type" => "zen",
       "zen" => {

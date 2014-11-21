@@ -14,10 +14,10 @@ include_recipe "elasticsearch::default"
 include_recipe "ufw"
 include_recipe "firewall"
 
-# Not Secure At All, But Convenient
+# Open ES and Kibana Ports
 firewall_rule "es" do
     protocol :tcp
-    ports [9200, 9300]
+    ports [9200, 9300, 5601]
     action :allow
     notifies :enable, 'firewall[ufw]'
 end

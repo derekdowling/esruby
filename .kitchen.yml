@@ -23,6 +23,6 @@ platforms:
 suites:
   - name: default
     run_list:
-      - role[cluster]
+      - role[dev]
       - recipe[esruby::default]
     attributes:
