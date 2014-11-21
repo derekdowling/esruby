@@ -9,7 +9,6 @@
 
 include_recipe "java"
 include_recipe "elasticsearch::default"
-include_recipe "kibana::install"
 
 # BASIC TOOLS
 include_recipe "ufw"
