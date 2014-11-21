@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
 export PROXY="199.116.235.83"
-export CHEF="/var/chef/cookbooks/esruby"
+export CHEF="/home/ubuntu/esruby"
 export OPTS="-A -t -o User=ubuntu -i /Users/derek/.ssh/391project.pem"
 export SUB_OPTS="-A -t -o User=ubuntu"
 export HOME="/home/user"
@@ -32,13 +32,11 @@ do
 		curl -sSL https://get.rvm.io | bash -s stable --ruby
 		source /home/ubuntu/.rvm/scripts/rvm
 		curl -# -L http://www.opscode.com/chef/install.sh | sudo bash -s --
-		sudo mkdir -p /etc/chef
-		sudo mkdir -p $CHEF
-		sudo curl -# -L -k -o /tmp/esruby-master.tar.gz https://github.com/derekdowling/esruby/archive/master.tar.gz
-		sudo tar --strip 1 -C $CHEF -xf /tmp/esruby-master.tar.gz
+		git clone https://github.com/derekdowling/esruby.git
 		gem install berkshelf --no-rdoc --no-ri
-		berks vendor /var/chef/cookbooks/ -b $CHEF/Berksfile
+		berks install -b $CHEF/Berksfile
 		chef-solo -N 391Cluster -j $CHEF/cluster.json -c $CHEF/solo.rb
+		git clone https://github.com/derekdowling/cs391.git
 		END
 done
 
