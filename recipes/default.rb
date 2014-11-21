@@ -9,6 +9,8 @@
 
 include_recipe "java"
 include_recipe "elasticsearch::default"
+include_recipe "kibana::nginx"
+include_recipe "kibana::install"
 
 # BASIC TOOLS
 include_recipe "ufw"
@@ -17,7 +19,7 @@ include_recipe "firewall"
 # Open ES and Kibana Ports
 firewall_rule "es" do
     protocol :tcp
-    ports [9200, 9300, 5601]
+    ports [9200, 9300, 5601, 80, 443]
     action :allow
     notifies :enable, 'firewall[ufw]'
 end
