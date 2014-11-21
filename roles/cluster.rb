@@ -9,11 +9,11 @@ default_attributes(
   },
   "elasticsearch" => {
     "version" => "1.4.0.Beta1",
-    "users" => [
-        {"username" => "cs391", "password" => "supersecure"},
-    ],
     "cluster" => {
       "name" => "elastic391"
+    },
+    "path" => {
+      "data" => "/data/elasticsearch"
     },
     "plugins" => {
       "karmi/elasticsearch-paramedic" => {
