@@ -30,8 +30,5 @@ default_attributes(
         }
       }
     }
-  },
-  "kibana" => {
-    "es_server" => "10.1.0.247"
   }
 )
