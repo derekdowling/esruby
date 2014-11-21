@@ -28,9 +28,6 @@ do
 	ssh $OPTS $PROXY ssh $SUB_OPTS $host <<-END
 		sudo apt-get update
 		sudo apt-get install build-essential curl git vim -y
-		command curl -sSL https://rvm.io/mpapis.asc | gpg --import -
-		curl -sSL https://get.rvm.io | bash -s stable --ruby
-		source /home/ubuntu/.rvm/scripts/rvm
 		curl -# -L http://www.opscode.com/chef/install.sh | sudo bash -s --
 		sudo mkdir -p /etc/chef
 		sudo mkdir -p $CHEF
@@ -40,6 +37,9 @@ do
 		sudo gem install berkshelf --no-rdoc --no-ri
 		sudo berks vendor /var/chef/cookbooks/ -b $CHEF/Berksfile
 		sudo chef-solo -N 391Cluster -j $CHEF/cluster.json -c $CHEF/solo.rb
+		command curl -sSL https://rvm.io/mpapis.asc | gpg --import -
+		curl -sSL https://get.rvm.io | bash -s stable --ruby
+		source /home/ubuntu/.rvm/scripts/rvm
 		END
 done
 
