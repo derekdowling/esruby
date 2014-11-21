@@ -28,14 +28,15 @@ do
 	ssh $OPTS $PROXY ssh $SUB_OPTS $host <<-END
 		sudo apt-get update
 		sudo apt-get install build-essential curl git vim -y bison zlib1g-dev libopenssl-ruby1.9.1 libssl-dev libyaml-0-2 libxslt-dev libxml2-dev libreadline-gplv2-dev libncurses5-dev file --yes --fix-missing
-		command curl -sSL https://rvm.io/mpapis.asc | gpg --import -
-		curl -sSL https://get.rvm.io | bash -s stable --ruby
-		source /home/ubuntu/.rvm/scripts/rvm
-		curl -# -L http://www.opscode.com/chef/install.sh | sudo bash -s --
+		s
+		sudo command curl -sSL https://rvm.io/mpapis.asc | gpg --import -
+		sudo curl -sSL https://get.rvm.io | bash -s stable --ruby
+		sudo source /home/ubuntu/.rvm/scripts/rvm
 		git clone https://github.com/derekdowling/esruby.git
-		gem install berkshelf --no-rdoc --no-ri
-		berks install -b $CHEF/Berksfile
-		sudo chef-solo -N 391Cluster -j $CHEF/cluster.json -c $CHEF/solo.rb
+		sudo gem install chef --no-rdoc --no-ri
+		sudo gem install berkshelf --no-rdoc --no-ri
+		sudo berks install -b $CHEF/Berksfile
+		sudo hef-solo -N 391Cluster -j $CHEF/cluster.json -c $CHEF/solo.rb
 		git clone https://github.com/derekdowling/cs391.git
 		END
 done
