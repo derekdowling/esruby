@@ -9,7 +9,6 @@
 
 include_recipe "java"
 include_recipe "elasticsearch::default"
-include_recipe "elasticsearch::search_discovery"
 
 # BASIC TOOLS
 include_recipe "ufw"

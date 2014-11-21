@@ -27,6 +27,7 @@ default_attributes(
       }
     },
     "discovery" => {
+      "type" => "zen",
       "zen" => {
         "ping" => {
           "unicast" => {
