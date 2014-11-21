@@ -35,7 +35,7 @@ do
 		git clone https://github.com/derekdowling/esruby.git
 		gem install berkshelf --no-rdoc --no-ri
 		berks install -b $CHEF/Berksfile
-		chef-solo -N 391Cluster -j $CHEF/cluster.json -c $CHEF/solo.rb
+		sudo chef-solo -N 391Cluster -j $CHEF/cluster.json -c $CHEF/solo.rb
 		git clone https://github.com/derekdowling/cs391.git
 		END
 done
