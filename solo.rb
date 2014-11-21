@@ -3,4 +3,4 @@
 log_level          :info
 log_location       STDOUT
 file_cache_path    "/var/chef/cookbooks"
-role_path          "/var/chef/cookbooks/esruby"
+role_path          "/var/chef/cookbooks/esruby/roles"
