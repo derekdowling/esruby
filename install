@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
 export PROXY="199.116.235.83"
-export CHEF="/home/ubuntu/esruby"
+export CHEF="/var/chef/cookbooks/esruby"
 export OPTS="-A -t -o User=ubuntu -i /Users/derek/.ssh/391project.pem"
 export SUB_OPTS="-A -t -o User=ubuntu"
 export HOME="/home/ubuntu"
@@ -27,19 +27,15 @@ do
 	echo ${host}
 	ssh $OPTS $PROXY ssh $SUB_OPTS $host <<-END
 		sudo apt-get update
-		sudo apt-get install build-essential curl git vim -y bison zlib1g-dev libopenssl-ruby1.9.1 libssl-dev libyaml-0-2 libxslt-dev libxml2-dev libreadline-gplv2-dev libncurses5-dev file --yes --fix-missing
-		s
-		sudo curl -sSL https://rvm.io/mpapis.asc | gpg --import -
-		sudo curl -sSL https://get.rvm.io | bash -s stable --ruby
-		sudo source /home/ubuntu/.rvm/scripts/rvm
-		rm -rf $CHEF
-		git clone https://github.com/derekdowling/esruby.git
-		sudo gem install chef --no-rdoc --no-ri
-		sudo gem install berkshelf --no-rdoc --no-ri
-		sudo berks install -b $CHEF/Berksfile
-		sudo hef-solo -N 391Cluster -j $CHEF/cluster.json -c $CHEF/solo.rb
-		rm -rf $HOME/cs391
-		git clone https://github.com/derekdowling/cs391.git
+		sudo apt-get install build-essential curl git vim -y
+		curl -# -L http://www.opscode.com/chef/install.sh | sudo bash -s --
+		curl -# -L -k -o /tmp/esruby.tar.gz https://github.com/derekdowling/esruby/archive/master.tar.gz
+		sudo mkdir -p /etc/chef/; sudo mkdir -p /var/chef/cookbooks/esruby
+		sudo tar --strip 1 -C /var/chef/cookbooks/esruby -xf /tmp/esruby.tar.gz
+		sudo apt-get install bison zlib1g-dev libopenssl-ruby1.9.1 libssl-dev libyaml-0-2 libxslt-dev libxml2-dev libreadline-gplv2-dev libncurses5-dev file ruby1.9.3 git --yes --fix-missing
+		sudo /opt/chef/embedded/bin/gem install berkshelf --no-rdoc --no-ri
+		sudo /opt/chef/embedded/bin/berks install --path=/var/chef/cookbooks/ --berksfile=/var/chef/cookbooks/esruby/Berksfile
+		sudo chef-solo -N 391Cluster -j $CHEF/cluster.json -c $CHEF/solo.rb
 		END
 done
 
