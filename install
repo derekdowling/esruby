@@ -30,10 +30,13 @@ if [ "${1}" = "-s" ]; then
 	nodes=( ${2} )
 fi
 # See if we are proxying through our public IP, checks if $SUB_HOST is set
-if [ "${1}" = "-a" ]; then
+if [ "${1}" = "-a" ] || [ "${1}" = "-s" ]; then
+	if [ "${1}" = "-s" ]; then
+		nodes=( ${2} )
+	fi
 	for host in "${nodes[@]}"
 	do
-		echo ${host}
+		echo "starting installation on ${host}"
 		ssh $OPTS $PROXY ssh $SUB_OPTS $host <<-END
 			sudo apt-get update
 			sudo apt-get install build-essential curl git vim -y
@@ -46,7 +49,6 @@ if [ "${1}" = "-a" ]; then
 			sudo /opt/chef/embedded/bin/berks vendor /var/chef/cookbooks -b $CHEF/Berksfile
 			sudo chef-solo -N 391Cluster -j $CHEF/cluster.json -c $CHEF/solo.rb
 			END
-		
-		echo "Installation Complete"
 	done
+	echo "Installation Complete"
 fi
