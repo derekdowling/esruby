@@ -27,19 +27,18 @@ do
 	echo ${host}
 	ssh $OPTS $PROXY ssh $SUB_OPTS $host <<-END
 		sudo apt-get update
-		sudo apt-get install build-essential curl git vim -y
-		sudo command curl -sSL https://rvm.io/mpapis.asc | gpg --import -
-		sudo curl -sSL https://get.rvm.io | bash -s stable --ruby
-		sudo source /home/ubuntu/.rvm/scripts/rvm
+		sudo apt-get install build-essential curl git vim -y bison zlib1g-dev libopenssl-ruby1.9.1 libssl-dev libyaml-0-2 libxslt-dev libxml2-dev libreadline-gplv2-dev libncurses5-dev file --yes --fix-missing
+		command curl -sSL https://rvm.io/mpapis.asc | gpg --import -
+		curl -sSL https://get.rvm.io | bash -s stable --ruby
+		source /home/ubuntu/.rvm/scripts/rvm
 		curl -# -L http://www.opscode.com/chef/install.sh | sudo bash -s --
 		sudo mkdir -p /etc/chef
 		sudo mkdir -p $CHEF
 		sudo curl -# -L -k -o /tmp/esruby-master.tar.gz https://github.com/derekdowling/esruby/archive/master.tar.gz
 		sudo tar --strip 1 -C $CHEF -xf /tmp/esruby-master.tar.gz
-		sudo apt-get install bison zlib1g-dev libopenssl-ruby1.9.1 libssl-dev libyaml-0-2 libxslt-dev libxml2-dev libreadline-gplv2-dev libncurses5-dev file --yes --fix-missing
-		sudo gem install berkshelf --no-rdoc --no-ri
-		sudo berks vendor /var/chef/cookbooks/ -b $CHEF/Berksfile
-		sudo chef-solo -N 391Cluster -j $CHEF/cluster.json -c $CHEF/solo.rb
+		gem install berkshelf --no-rdoc --no-ri
+		berks vendor /var/chef/cookbooks/ -b $CHEF/Berksfile
+		chef-solo -N 391Cluster -j $CHEF/cluster.json -c $CHEF/solo.rb
 		END
 done
 
