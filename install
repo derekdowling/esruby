@@ -1,7 +1,5 @@
 #!/usr/bin/env bash
 
-echo "Uploading cluster.json"
-
 export PROXY="199.116.235.83"
 export CHEF="/var/chef/cookbooks/esruby"
 export OPTS="-A -t -o User=ubuntu -i /Users/derek/.ssh/391project.pem"
@@ -10,6 +8,14 @@ export HOME="/home/user"
 
 # Nodes To Run Against
 nodes=( 10.1.0.247 10.1.0.249 10.1.1.41 10.1.1.44 )
+
+if [ "${1}" = "-l" ]; then
+	for host in "${nodes[@]}"
+	do
+		echo ${host}
+	done
+	exit 0
+fi
 
 # See if we are proxying through our public IP, checks if $SUB_HOST is set
 if [ "${1}" = "-s" ]; then
