@@ -1,4 +1,5 @@
 # Chef Solo Config File
+# This is what powers our actual node cluster installations
 
 log_level          :info
 log_location       STDOUT

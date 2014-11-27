@@ -1,4 +1,6 @@
-User Name: user
+This list of machines available to us:
+
+User Name: ubuntu
 OS: Ubuntu 12.
 Public IP to Node 0: 199.116.235.83
 
